@@ -27,10 +27,22 @@ while flag:
     format = input("Enter the format of your audio file: (mp3/wav/flac) ").lower()       #user input for format of the audio file
     if len(format)!=0:
         user_input = input("Enter the path of your file: ")
-        t1 = int(input("Enter the Starting time in seconds to split: "))
-        t2 = int(input("Enter the Ending time in seconds to split: "))
-        t1 = t1 * 1000 
-        t2 = t2 * 1000
+        user_input = input("Enter the path of your file: ")
+        
+        print("Please enter the start time: ")
+        
+        t1_hours = int(input("Input hours: ")) * 3600
+        t1_minutes = int(input("Input minutes: ")) * 60
+        t1_seconds = int(input("Input seconds: "))
+        t1 = t1_hours + t1_minutes + t1_seconds
+        
+        print("Please enter the end time: ")
+        
+        t2_hours = int(input("Input hours: ")) * 3600
+        t2_minutes = int(input("Input minutes: ")) * 60
+        t2_seconds = int(input("Input seconds: "))
+        t2 = t2_hours + t2_minutes + t2_seconds
+        
         assert os.path.exists(user_input), "I did not find the file at, "+str(user_input)
         audio(t1,t2,user_input,format)                                                   #calls wav function
         
