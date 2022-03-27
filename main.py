@@ -11,7 +11,7 @@ def audio(t1,t2,user_input,audio_type):
         if audio_type=="mp3":
             newAudio = AudioSegment.from_mp3(user_input)
         elif audio_type=="wav":
-            newAudio = AudioSegment.from_mp3(user_input)
+            newAudio = AudioSegment.from_wav(user_input)
         else:
             newAudio = AudioSegment.from_file(user_input,format)
         newAudio = newAudio[t1:t2]
