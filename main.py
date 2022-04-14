@@ -1,23 +1,23 @@
 from pydub import AudioSegment
 import os
 import pandas as pd
-cols = [2,3]
-
-
+cols = [1,2,3]
+# col = [2]
+counter = 1
 flag = True 
     
-def audio(t1,t2,user_input,audio_type):                              
+def audio(t1,t2,user_input,audio_type,file_name,file_dest):                              
         global flag, counter
         if audio_type=="mp3":
             newAudio = AudioSegment.from_mp3(user_input)
         elif audio_type=="wav":
-            newAudio = AudioSegment.from_wav(user_input)
+            newAudio = AudioSegment.from_mp3(user_input)
         else:
             newAudio = AudioSegment.from_file(user_input,format)
         newAudio = newAudio[t1:t2]
-        file_dest = input("Enter the path to where audio should be exported: ")
-        file_name = input("Enter the new name for the audio file: ")
-        newAudio.export(f'{file_dest}\\{file_name}.'+audio_type, format=audio_type)
+        # file_name = input("Enter the new name for the audio file: ")
+        newAudio.export(f'{file_dest}\\Q{counter}_{file_name}.'+audio_type, format=audio_type)
+        counter += 1
         
 
 
@@ -34,14 +34,17 @@ while flag:
     if len(format)!=0:
         user_input = input("Enter the path of your file: ")
         df = pd.read_excel (r'timestamps.xlsx', usecols = cols) 
+        df = df.replace('\?','',regex=True) 
         count_row = df.shape[0]
+        file_dest = input("Enter the path to where audio should be exported: ")
         for i in range(count_row):
             time1 = df.at[i,'start time']
             time2 = df.at[i,'end time']
+            file_name = df.at[i,'question']
             t1 = get_seconds(str(time1))
             t2 = get_seconds(str(time2))
             assert os.path.exists(user_input), "I did not find the file at, "+str(user_input)
-            audio(t1,t2,user_input,format)
+            audio(t1,t2,user_input,format,file_name,file_dest)
             choice = input("Do You want to continue Splitting: (Y/N) ").lower()
             if choice == "y":
                 flag =  True
