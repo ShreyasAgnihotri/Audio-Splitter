@@ -11,7 +11,7 @@ def audio(t1,t2,user_input,audio_type,file_name,file_dest):
         if audio_type=="mp3":
             newAudio = AudioSegment.from_mp3(user_input)
         elif audio_type=="wav":
-            newAudio = AudioSegment.from_mp3(user_input)
+            newAudio = AudioSegment.from_wav(user_input)
         else:
             newAudio = AudioSegment.from_file(user_input,format)
         newAudio = newAudio[t1:t2]
@@ -33,8 +33,10 @@ while flag:
     format = input("Enter the format of your audio file: (mp3/wav/flac) ").lower()      
     if len(format)!=0:
         user_input = input("Enter the path of your file: ")
-        df = pd.read_excel (r'timestamps.xlsx', usecols = cols) 
+        excel_input = input("Enter path of the Excel File: ")
+        df = pd.read_excel (f'{excel_input}', usecols = cols) 
         df = df.replace('\?','',regex=True) 
+        # df1 = pd.read_excel(r'timestamps.xlsx',usecols = col )
         count_row = df.shape[0]
         file_dest = input("Enter the path to where audio should be exported: ")
         for i in range(count_row):
@@ -45,12 +47,22 @@ while flag:
             t2 = get_seconds(str(time2))
             assert os.path.exists(user_input), "I did not find the file at, "+str(user_input)
             audio(t1,t2,user_input,format,file_name,file_dest)
-            choice = input("Do You want to continue Splitting: (Y/N) ").lower()
-            if choice == "y":
-                flag =  True
+            if i + 2 > count_row:
+                print("The Splitting of the current Audio File is done.")
+                choice = input("Do You want to continue Splitting: (Y/N) ").lower()
+                if choice == "y":
+                    flag =  True
+                else:
+                    flag = False
+                    break
             else:
-                flag = False
-                break
+                choice = input("Do You want to continue Splitting: (Y/N) ").lower()
+                if choice == "y":
+                    flag =  True
+                else:
+                    flag = False
+                    break
+
     else:
         print("Invalid Format")
         flag = True
