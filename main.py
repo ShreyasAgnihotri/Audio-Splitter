@@ -1,7 +1,3 @@
-from msilib.schema import ComboBox
-from turtle import bgcolor, width
-from matplotlib.pyplot import text
-from numpy import size
 from pydub import AudioSegment
 import os
 import pandas as pd
